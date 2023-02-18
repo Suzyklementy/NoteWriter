@@ -39,9 +39,14 @@
                 <input type="text" id="note_title" spellCheck="false" value="@Model.Title" class="note-title mx-5 mt-4 mb-3" asp-for="Title">
                 <textarea class="mx-4" spellCheck="false" id="note_text" oninput="NotSaved()" asp-for="Text">@Model.Text</textarea>
 
-                <div class="submit-button">
-                    <span id="save_confirm">Save &check;</span>
-                    <input type="submit" value="Save">
+                <div class="note--button-bar">
+                    <div class="d-flex align-items-center">
+                        <button asp-action="ExportFile" class="button-style">Save as file</button>
+                    </div>
+                    <div class="submit-button">
+                        <span id="save_confirm">Save &check;</span>
+                        <input type="submit" value="Save">
+                    </div>
                 </div>
             </form>
             

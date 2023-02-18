@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using NoteWriter.Data;
 using NoteWriter.Models;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using System.Text;
 
 namespace NoteWriter.Controllers
 {
@@ -16,15 +18,17 @@ namespace NoteWriter.Controllers
         private readonly NoteWriterDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IWebHostEnvironment _hostEnv;
 
         private static NoteModel currentNote;
 
-        public HomeController(ILogger<HomeController> logger, NoteWriterDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, NoteWriterDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IWebHostEnvironment hostEnv)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _hostEnv = hostEnv;
 
             if (!_context.Notes.Any(n => n.UserId == "0"))
             {
@@ -99,6 +103,25 @@ namespace NoteWriter.Controllers
 
             currentNote = _context.Notes.First(n => n.Id == currentNote.Id);
             return RedirectToAction(nameof(Index));
+        }
+
+        public FileStreamResult ExportFile()
+        {
+
+            string fileName = $"{currentNote.Title}.txt";
+            string? noteText = currentNote.Text;
+
+            if(noteText == null)
+            {
+                noteText = "Note text was null";
+            }
+
+             var stream = new MemoryStream(Encoding.ASCII.GetBytes(noteText));
+
+            return new FileStreamResult(stream, "text/plain")
+            {
+                FileDownloadName = fileName
+            };
         }
 
         public IActionResult Privacy()
