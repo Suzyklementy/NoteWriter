@@ -1,0 +1,38 @@
+﻿@model NoteWriter.Models.UserModel
+
+@{
+    ViewData["Title"] = " - Sign Up";
+}
+
+<div class="login-page">
+
+    <h1 class="text-center mb-2">Sign up</h1>
+
+    <form class="d-flex m-1 p-1 flex-column" asp-action="Register">
+        <div asp-validation-summary="ModelOnly" class="text-danger p-1"></div>
+
+        <label asp-for="Email">Email:</label>
+        <input type="text" asp-for="Email"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <label asp-for="Password">Password:</label>
+        <input type="password" asp-for="Password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <label asp-for="ConfirmPassword">Repeat Password:</label>
+        <input type="password" asp-for="ConfirmPassword"/>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+        <p>Have account already <a asp-action="Login">Sign in Here</a></p>
+
+        <input type="submit" value="Sign up" class="button-style"/>
+    </form>
+
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

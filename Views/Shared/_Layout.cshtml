@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<IdentityUser> signInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NoteWriter @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/NoteWriter.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-black box-shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NoteWriter</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-action="Create">Create Note</a>
+                        </li>
+
+                        @if(signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item d-flex position-absolute align-items-center" style="right: 20px">
+                                <span class="nav-link text-white fw-bold">Logged as <i>@User.FindFirstValue(ClaimTypes.Name)</i></span>
+
+                                <span>
+                                    <a class="nav-link text-white" asp-area="" asp-action="Logout">Log out</a>
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item position-absolute" style="right: 20px;">
+                                <a class="nav-link text-white" asp-area="" asp-action="Login">Sign in</a>
+                            </li>
+                        }   
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="container-fluid">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-black footer text-muted position-fixed bottom-0">
+        <div class="container-fluid d-flex justify-content-end pe-5 text-white">
+            &copy; 2023 - NoteWriter - <a asp-area="" asp-controller="Home" asp-action="Privacy" style="color: #999">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

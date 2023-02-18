@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@model NoteWriter.Models.NoteModel
+
+@{
+    ViewData["Title"] = " - " + Model.Title;
+}
+
+<div class="row">
+
+    <div class="notes col-2 col-border">
+
+        <h3 class="border-bottom border-dark pe-3 ps-3 pt-3">Your Notes</h3>
+
+        <ul class="note-list">
+            @foreach(var note in ViewBag.notes)
+            {
+                <li>
+                    <form class="d-flex justify-content-between w-100" asp-action="Delete" asp-controller="Home" asp-route-id="@note.Id">
+                        <a asp-action="ChangeNote" asp-route-id="@note.Id">@note.Title</a>
+                        <input type="submit" value="Delete" class="delete-button">
+                    </form>
+                </li>
+            }
+        </ul>
+
+    </div>
+
+    <div class="col-10">
+
+        @if(!signInManager.IsSignedIn(User))
+        {
+            <h3 class="pt-5 text-center text-danger">If you want to see more notes and create them, first you have to sign in!</h3>
+        }
+
+        <div class="current-note">
+
+            <form asp-action="Update">
+                <input type="text" id="note_title" spellCheck="false" value="@Model.Title" class="note-title mx-5 mt-4 mb-3" asp-for="Title">
+                <textarea class="mx-4" spellCheck="false" id="note_text" oninput="NotSaved()" asp-for="Text">@Model.Text</textarea>
+
+                <div class="submit-button">
+                    <span id="save_confirm">Save &check;</span>
+                    <input type="submit" value="Save">
+                </div>
+            </form>
+            
+        </div>
+
+    </div>
+
+</div>

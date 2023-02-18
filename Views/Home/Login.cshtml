@@ -1,0 +1,31 @@
+﻿@model NoteWriter.Models.LoginModel
+
+@{
+    ViewData["Title"] = " - Sign in";
+}
+
+<div class="login-page">
+
+    <h1 class="text-center mb-2">Sign in</h1>
+
+    <form class="d-flex m-1 p-1 flex-column" asp-action="Login">
+
+        <label asp-for="Email">Email:</label>
+        <input type="text" asp-for="Email"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <label asp-for="Password">Password:</label>
+        <input type="password" asp-for="Password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <div class="d-flex my-2">
+            <input type="checkbox" asp-for="RememberMe"/>
+            <label asp-for="RememberMe">Remeber Me?</label>
+        </div>
+
+        <p>Do not have account <a asp-action="Register">Register Here</a></p>
+
+        <input type="submit" value="Sign in" class="button-style"/>
+    </form>
+
+</div>
